@@ -1,0 +1,15 @@
+langgraph
+langchain
+langchain-openai
+langchain-groq
+langchain-community
+python-dotenv
+requests
+psycopg[binary]
+langgraph-checkpoint-postgres
+mcp[cli]==1.30.0
+langchain-mcp-adapters==0.3.2
+fastapi
+uvicorn[standard]
+jinja2
+langsmith

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Travel Planner</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css?v=2" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+</head>
+<body>
+
+  <!-- Ambient pastel background -->
+  <div class="bg" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <main class="page">
+
+    <!-- Hero banner -->
+    <header class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-content">
+        <div class="badge"><span class="dot"></span> Multi-Agent AI System</div>
+        <h1>✈️ Travel Smarter <span class="ai-pill">with AI</span></h1>
+        <p class="sub">A supervisor routes your request to specialized agents — flights, hotels,
+          transport, weather, budget — then drafts your itinerary for your approval.</p>
+      </div>
+    </header>
+
+    <!-- Destination strip -->
+    <div class="dest-row">
+      <button class="dest-chip" data-q="Plan a 7-day trip to Tokyo, Japan">
+        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=300&q=70" alt="Tokyo" /><span>🇯🇵 Tokyo</span>
+      </button>
+      <button class="dest-chip" data-q="Plan a 5-day trip to Paris, France">
+        <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=300&q=70" alt="Paris" /><span>🇫🇷 Paris</span>
+      </button>
+      <button class="dest-chip" data-q="Plan a 6-day trip to Bangkok, Thailand">
+        <img src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=300&q=70" alt="Bangkok" /><span>🇹🇭 Bangkok</span>
+      </button>
+      <button class="dest-chip" data-q="Plan a 5-day trip to Rome, Italy">
+        <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=300&q=70" alt="Rome" /><span>🇮🇹 Rome</span>
+      </button>
+      <button class="dest-chip" data-q="Plan a 5-day trip to Dubai, UAE">
+        <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=300&q=70" alt="Dubai" /><span>🇦🇪 Dubai</span>
+      </button>
+    </div>
+
+    <!-- Input card: prompt -->
+    <section class="input-card">
+      <div class="input-label">🗺️ Describe your trip</div>
+      <div class="chip-row" id="quickChips">
+        <button class="chip">7-day Japan trip</button>
+        <button class="chip">Paris trip for 5 days</button>
+        <button class="chip">Dubai weekend trip</button>
+        <button class="chip">Bali backpacking 10 days</button>
+      </div>
+      <div class="search-field">
+        <span class="search-icon">🔍</span>
+        <textarea id="query" rows="3"
+          placeholder="e.g. Plan a complete 7-day Japan trip including flights, hotels and sightseeing"></textarea>
+      </div>
+      <div class="search-footer">
+        <div class="user-field">
+          <span>👤</span>
+          <input id="threadId" type="text" value="web_user" title="User ID — keeps travel history across queries" />
+        </div>
+        <button id="generateBtn"><span class="btn-label">🚀 Generate My Travel Plan</span></button>
+      </div>
+      <div id="warn" class="warn hidden">⚠️ Please describe your trip first.</div>
+    </section>
+
+    <!-- Agent response: pipeline (below the prompt) -->
+    <section id="pipeline" class="hidden">
+      <div class="sec-head">
+        <div>
+          <h2>🤖 Agent Pipeline</h2>
+          <p>Watch your trip come together, live</p>
+        </div>
+        <span class="live-badge"><span class="dot"></span> live</span>
+      </div>
+      <div class="timeline"><div id="agents"></div></div>
+    </section>
+
+    <!-- Metrics -->
+    <div id="metrics" class="metric-row hidden">
+      <div class="metric-box"><div class="metric-val" id="mAgents">0</div><div class="metric-lbl">Agents Run</div></div>
+      <div class="metric-box"><div class="metric-val" id="mCalls">0</div><div class="metric-lbl">LLM Calls</div></div>
+      <div class="metric-box"><div class="metric-val">✓</div><div class="metric-lbl">Status</div></div>
+    </div>
+
+    <!-- Agent response: final plan -->
+    <section id="final" class="hidden">
+      <div class="sec-head">
+        <div>
+          <h2>🧠 Final Travel Plan</h2>
+          <p>Curated by the planner agent</p>
+        </div>
+        <button id="downloadBtn" class="download-btn">⬇ Download (.md)</button>
+      </div>
+      <div class="final-card" id="finalCard"></div>
+    </section>
+
+    <footer class="footer">
+      <span>🧭 Supervisor</span><i>·</i><span>✈️ Flights</span><i>·</i><span>🏨 Hotels</span><i>·</i><span>🚇 Transport</span><i>·</i><span>🌤️ Weather</span><i>·</i><span>💰 Budget</span><i>·</i><span>🙋 You approve</span>
+    </footer>
+
+  </main>
+
+  <script src="/static/js/app.js?v=2"></script>
+</body>
+</html>
